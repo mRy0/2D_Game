@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F98D9394-1274-413A-A977-B850380D4DE1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>_2D_Test_Game</RootNamespace>
+    <AssemblyName>2D_Test_Game</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Bridge, Version=17.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Core.17.6.0\lib\net40\Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Bridge.Html5, Version=17.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Html5.17.6.0\lib\net40\Bridge.Html5.dll</HintPath>
+    </Reference>
+    <Reference Include="Bridge.jQuery2, Version=2.20.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.jQuery.2.20.0\lib\net40\Bridge.jQuery2.dll</HintPath>
+    </Reference>
+    <Reference Include="Bridge.WebGL, Version=1.19.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.WebGL.1.19.0\lib\net40\Bridge.WebGL.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blocks\Block.cs" />
+    <Compile Include="Blocks\Stone.cs" />
+    <Compile Include="Blocks\Empty.cs" />
+    <Compile Include="Blocks\Dirt.cs" />
+    <Compile Include="Blocks\Grass.cs" />
+    <Compile Include="DebugInfo.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Projectiles\Projectile.cs" />
+    <Compile Include="Projectiles\Rifleshot.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bridge.json" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Scripts\jquery-2.2.4.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery-2.2.4.intellisense.js" />
+    <None Include="Scripts\jquery-2.2.4.js" />
+    <Content Include="Scripts\jquery-2.2.4.min.js" />
+    <Content Include="www\bridge\2D_Test_Game.js" />
+    <Content Include="www\bridge\2D_Test_Game.meta.js" />
+    <Content Include="www\bridge\bridge.console.js" />
+    <Content Include="www\bridge\bridge.js" />
+    <Content Include="www\bridge\bridge.meta.js" />
+    <Content Include="www\bridge\index.html" />
+    <Content Include="www\img\DirtBlock.png" />
+    <Content Include="www\img\foo\Brown Block.png" />
+    <Content Include="www\img\foo\Character Boy.png" />
+    <Content Include="www\img\foo\Character Cat Girl.png" />
+    <Content Include="www\img\foo\Character Horn Girl.png" />
+    <Content Include="www\img\foo\Character Pink Girl.png" />
+    <Content Include="www\img\foo\Character Princess Girl.png" />
+    <Content Include="www\img\foo\Chest Closed.png" />
+    <Content Include="www\img\foo\Chest Lid.png" />
+    <Content Include="www\img\foo\Chest Open.png" />
+    <Content Include="www\img\foo\CHEST_CLOSED.png" />
+    <Content Include="www\img\foo\CHEST_OPENED.png" />
+    <Content Include="www\img\foo\Dirt Block.png" />
+    <Content Include="www\img\foo\Door Tall Closed.png" />
+    <Content Include="www\img\foo\Door Tall Open.png" />
+    <Content Include="www\img\foo\Enemy Bug.png" />
+    <Content Include="www\img\foo\Gem Blue.png" />
+    <Content Include="www\img\foo\Gem Green.png" />
+    <Content Include="www\img\foo\Gem Orange.png" />
+    <Content Include="www\img\foo\GrassBlock.png" />
+    <Content Include="www\img\foo\Heart.png" />
+    <Content Include="www\img\foo\Key.png" />
+    <Content Include="www\img\foo\Plain Block.png" />
+    <Content Include="www\img\foo\PlanetCuteShadowMockup.jpg" />
+    <Content Include="www\img\foo\PlanetCuteShadowTest.png" />
+    <Content Include="www\img\foo\Ramp East.png" />
+    <Content Include="www\img\foo\Ramp North.png" />
+    <Content Include="www\img\foo\Ramp South.png" />
+    <Content Include="www\img\foo\Ramp West.png" />
+    <Content Include="www\img\foo\Rock.png" />
+    <Content Include="www\img\foo\Roof East.png" />
+    <Content Include="www\img\foo\Roof North East.png" />
+    <Content Include="www\img\foo\Roof North West.png" />
+    <Content Include="www\img\foo\Roof North.png" />
+    <Content Include="www\img\foo\Roof South East.png" />
+    <Content Include="www\img\foo\Roof South West.png" />
+    <Content Include="www\img\foo\Roof South.png" />
+    <Content Include="www\img\foo\Roof West.png" />
+    <Content Include="www\img\foo\Selector.png" />
+    <Content Include="www\img\foo\Shadow East.png" />
+    <Content Include="www\img\foo\Shadow North East.png" />
+    <Content Include="www\img\foo\Shadow North West.png" />
+    <Content Include="www\img\foo\Shadow North.png" />
+    <Content Include="www\img\foo\Shadow Side West.png" />
+    <Content Include="www\img\foo\Shadow South East.png" />
+    <Content Include="www\img\foo\Shadow South West.png" />
+    <Content Include="www\img\foo\Shadow South.png" />
+    <Content Include="www\img\foo\Shadow West.png" />
+    <Content Include="www\img\foo\SpeechBubble.png" />
+    <Content Include="www\img\foo\Star.png" />
+    <Content Include="www\img\foo\Stone Block Tall.png" />
+    <Content Include="www\img\foo\Stone Block.png" />
+    <Content Include="www\img\foo\Tree Short.png" />
+    <Content Include="www\img\foo\Tree Tall.png" />
+    <Content Include="www\img\foo\Tree Ugly.png" />
+    <Content Include="www\img\foo\Wall Block Tall.png" />
+    <Content Include="www\img\foo\Wall Block.png" />
+    <Content Include="www\img\foo\Water Block.png" />
+    <Content Include="www\img\foo\Window Tall.png" />
+    <Content Include="www\img\foo\Wood Block.png" />
+    <Content Include="www\img\GrassBlock.png" />
+    <Content Include="www\img\StoneBlock.png" />
+    <Content Include="www\index.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Bridge.Min.17.6.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.17.6.0\build\Bridge.Min.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Bridge.Min.17.6.0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bridge.Min.17.6.0\build\Bridge.Min.targets'))" />
+  </Target>
+</Project>

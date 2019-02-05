@@ -11,25 +11,33 @@ namespace _2D_Test_Game
         {
             _player = player;
             LoadMap(file);
+            _img = new Bridge.Html5.HTMLImageElement()
+            {
+                Src = "img/backgr.png"
+            };
         }
 
         public Action Loaded;
 
         private Blocks.Block[,] _worldBlocks;
+        private List<Light> _lights = new List<Light>(); 
+
         private List<Projectiles.Projectile> _projectiles = new List<Projectiles.Projectile>();
         public Player _player;
+
+        private Bridge.Html5.HTMLImageElement _img;
 
         private void LoadMap(string file)
         {
             var json = Bridge.jQuery2.jQuery.GetJSON(file, null, new Action<object>((data) =>
             {
                 //int[,] map = Bridge.Html5.JSON.Parse<int[,]>(data);
-                int[,] map = (int[,])data;
-
+                //int[,] map = (int[,])data;
+                
                 var dData = data.ToDynamic();
-
+                
                 int w = 0, h =0;
-                foreach (int[] r in dData)
+                foreach (int[] r in dData["blocks"])
                 {
                     if(h ==0)
                     {
@@ -42,7 +50,7 @@ namespace _2D_Test_Game
                 }
                 _worldBlocks = new Blocks.Block[h, w];
                     int i = 0, j = 0;
-                foreach (int[] r in dData)
+                foreach (int[] r in dData["blocks"])
                 {
                     j = 0;
                     foreach (int bl in r)
@@ -69,7 +77,17 @@ namespace _2D_Test_Game
                     }
                     i++;
                 }
-             
+
+                foreach (int[] l in dData["lights"])
+                {
+                    _lights.Add(new Light()
+                    {
+                        Type = l[0],
+                        X = l[1],
+                        Y = l[2]
+                    });
+                }
+                
                 Loaded();
             }));
         }
@@ -109,12 +127,12 @@ namespace _2D_Test_Game
         }
 
 
-        public void Draw(Bridge.Html5.CanvasRenderingContext2D canvas, int width, int height)
-        {            
+        public void Draw(Bridge.Html5.CanvasRenderingContext2D canvas, Bridge.Html5.CanvasRenderingContext2D shadowContext, int width, int height)
+        {
             //draw black bg
-            canvas.FillStyle = "black";
-            canvas.FillRect(0, 0, width, height);
-
+            //canvas.FillStyle = "black";
+            //canvas.FillRect(0, 0, width, height);
+            canvas.DrawImage(_img, 0, 0, width, height);
 
             //draw world
             int mapPosX, mapPosY;
@@ -145,6 +163,7 @@ namespace _2D_Test_Game
             DebugInfo.DrawWidth = width;
 
             
+            
 
             int tmpDrawX, tmpMapX;
             int tmpMapY = mapPosY;
@@ -170,9 +189,31 @@ namespace _2D_Test_Game
                 tmpDrawY += Blocks.Block.BlockSizeY;
             }
 
+            
+
+
+
+
+            /*ct.GlobalAlpha = 0.5f;
+            ct.FillStyle = "rgba(0,0,0,0.3)";
+            ct.FillRect(0, 0, width, height);
+            ct.FillStyle = "rgba(255,255,255,0.3)";
+            ct.BeginPath();
+            ct.Arc(250, 250, 20, 0, 2 * Math.PI);
+            ct.Fill();
+            ct.GlobalCompositeOperation = Bridge.Html5.CanvasTypes.CanvasCompositeOperationType.Lighten;
+            */
+
+            //canvas.DrawImage(ct.Canvas, 0, 0, width, height);
+            
+
+
+
+            //canvas.CreateRadialGradient()
+
 
             //draw projectiles
-            foreach(var projectile in _projectiles)
+            foreach (var projectile in _projectiles)
             {
                 projectile.Draw(canvas,  drawPosX + projectile.X - mapPosX, drawPosY +  projectile.Y - mapPosY);
 
@@ -181,8 +222,65 @@ namespace _2D_Test_Game
 
             //draw player
             _player.Draw(canvas,(width / 2), (height / 2));
+
+
+
+
+            //shadowContext.ClearRect(0, 0, width, height);
+            //shadowContext.ClearRect(0, 0, width, height);
+            shadowContext.GlobalCompositeOperation = Bridge.Html5.CanvasTypes.CanvasCompositeOperationType.SourceOver;
+            shadowContext.FillStyle = "#000";
+            shadowContext.FillRect(0, 0, width, height);
+            shadowContext.GlobalCompositeOperation = Bridge.Html5.CanvasTypes.CanvasCompositeOperationType.DestinationOut;
+
+            shadowContext.FillStyle = "rgb(0,0,0,0.3)";
+            shadowContext.FillRect(0, 0, width, height);
+            //create lights
+            foreach (var light in _lights)
+            {
+                int rad = 100;
+                if (light.Type == 2)
+                {
+                    rad = 500;
+                }
+                var lGrd = shadowContext.CreateRadialGradient(drawPosX - mapPosX + light.X, drawPosY - mapPosY + light.Y, 0, drawPosX - mapPosX + light.X, drawPosY - mapPosY + light.Y, rad);
+
+                lGrd.AddColorStop(0, "rgba(255,255,255," + Math.Round( ((float)light.Brightness / 100), 2)+ ")");
+                lGrd.AddColorStop(1, "rgba(255,255,255,0.0)");
+                shadowContext.FillStyle = lGrd;
+                shadowContext.FillRect(0, 0, width, height);
+            }
+
+
+            canvas.DrawImage(shadowContext.Canvas, 0, 0, width, height);
         }
 
+        public void AnimateLight()
+        {
+            foreach(var l  in _lights)
+            {
+                if(l.Type == 3)
+                {
+                    if(l.Brightness >= 100)
+                    {
+                        l.BrightDown = true;
+                    }
+                    else if(l.Brightness <= 0)
+                    {
+                        l.BrightDown = false;
+                    }
+
+                    if(l.BrightDown)
+                    {
+                        l.Brightness--;
+                    }
+                    else
+                    {
+                        l.Brightness++;
+                    }
+                }
+            }
+        }
         
         public void MovePlayer(double mvX, double mvY)
         {
@@ -237,12 +335,11 @@ namespace _2D_Test_Game
 
         public void Shoot()
         {
-            Console.WriteLine("BOOM");
             _projectiles.Add(new Projectiles.Rifleshot()
             {
                 Direction = (int) _player.DirectionDegrees,
-                X = _player.X + (Player.Width / 2),
-                Y = _player.Y + (Player.Height / 2)
+                X = (int)(_player.X + (Player.Width / 2) + ((Player.Width * 1.5 )* Math.Cos(_player.DirectionDegrees / (180 / Math.PI)))),
+                Y = (int)( _player.Y + (Player.Height / 2) + ((Player.Width * 1.5) * Math.Sin(_player.DirectionDegrees / (180 / Math.PI)))),
             });
         }
 
@@ -256,7 +353,6 @@ namespace _2D_Test_Game
                 if (projectile.X < 0 || projectile.Y < 0 || projectile.X > (_worldBlocks.GetLength(1) * Blocks.Block.BlockSizeX) || projectile.Y > (_worldBlocks.GetLength(0) * Blocks.Block.BlockSizeY))
                 { 
                     _projectiles.RemoveAt(i);
-                    Console.WriteLine("rem proj");
                 }
             }
         }

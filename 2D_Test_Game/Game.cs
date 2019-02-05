@@ -8,6 +8,9 @@ namespace _2D_Test_Game
 {
     public class Game
     {
+
+        private const int TickRate = 100;
+
         public static void Main()
         {
             var cnv = new HTMLCanvasElement();
@@ -48,6 +51,9 @@ namespace _2D_Test_Game
         private HTMLCanvasElement _mainCanvas;
         private CanvasRenderingContext2D _mainCanvasRenderer;
 
+        private Bridge.Html5.HTMLCanvasElement _shadowCanvas;
+        private Bridge.Html5.CanvasRenderingContext2D _shadowCanvas2D;
+
         private DateTime _lastDraw;
 
         private World _world;
@@ -62,6 +68,15 @@ namespace _2D_Test_Game
         {
             _mainCanvas = canvas;
             _mainCanvasRenderer = _mainCanvas.GetContext(CanvasTypes.CanvasContext2DType.CanvasRenderingContext2D);
+
+            _shadowCanvas = new Bridge.Html5.HTMLCanvasElement()
+            {
+                Width = _mainCanvas.Width,
+                Height = _mainCanvas.Height
+            };
+            _shadowCanvas2D = _shadowCanvas.GetContext(Bridge.Html5.CanvasTypes.CanvasContext2DType.CanvasRenderingContext2D);
+            
+
             Resize();
 
             _player = new Player();
@@ -70,8 +85,10 @@ namespace _2D_Test_Game
 
             _world = new World(_player, "map1.json");
             _world.Loaded += () => {
+                Window.SetTimeout(GameTick,1000 / TickRate);
                 Window.RequestAnimationFrame(GameFrame);
-
+                _player.X = 500;
+                _player.Y = 500;
             };
 
         }
@@ -99,21 +116,26 @@ namespace _2D_Test_Game
         {
             _mainCanvas.Width = Window.Document.Body.ClientWidth;
             _mainCanvas.Height = Window.Document.Body.ClientHeight - 8;
+            _shadowCanvas.Width = Window.Document.Body.ClientWidth;
+            _shadowCanvas.Height = Window.Document.Body.ClientHeight - 8;
+        }
+
+
+        private void GameTick()
+        {
+            HandleMovement(1000 / TickRate);
+
+            _world.MoveProjectiles(1000 / TickRate);
+            Window.SetTimeout(GameTick, 1000 / TickRate);
+            _world.AnimateLight();
+
         }
 
         private void GameFrame()
         {
-            HandleMovement();
-
-            _world.MoveProjectiles((DateTime.Now - _lastDraw).TotalMilliseconds );
-
-
-
-            _world.Draw(_mainCanvasRenderer, _mainCanvas.Width, _mainCanvas.Height);
+            _world.Draw(_mainCanvasRenderer, _shadowCanvas2D,  _mainCanvas.Width, _mainCanvas.Height);
 
             
-
-
             DebugInfo.MsPerDraw =  ((DateTime.Now - _lastDraw).TotalMilliseconds);
             _lastDraw = DateTime.Now;
 
@@ -141,7 +163,7 @@ namespace _2D_Test_Game
 
 
         private DateTime _nextShoot = DateTime.Now;
-        private void HandleMovement()
+        private void HandleMovement(double ms)
         {
 
 
@@ -158,10 +180,10 @@ namespace _2D_Test_Game
             _player.DirectionDegrees = foo;
             DebugInfo.PlayerLookDeg = (int)_player.DirectionDegrees;
 
-            double mvnt = ((DateTime.Now - _lastDraw).TotalMilliseconds / 1000);
+            double mvnt = ms/ 1000;
 
             double mvmntX= 0 , mvmntY = 0;
-
+            
 
             foreach (var key in _keys)
             {

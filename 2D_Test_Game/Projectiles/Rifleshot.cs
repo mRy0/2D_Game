@@ -8,7 +8,7 @@ namespace _2D_Test_Game.Projectiles
 {
     public class Rifleshot : Projectile
     {
-        public override double Speed { set; get; } = 1024;
+        public override double Speed { set; get; } = 3072;
 
         public override void Draw(CanvasRenderingContext2D context, int x, int y)
         {

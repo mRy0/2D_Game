@@ -56,6 +56,7 @@
     <Compile Include="Blocks\Grass.cs" />
     <Compile Include="DebugInfo.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Light.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Projectiles\Projectile.cs" />
     <Compile Include="Projectiles\Rifleshot.cs" />
@@ -79,6 +80,7 @@
     <Content Include="www\bridge\bridge.js" />
     <Content Include="www\bridge\bridge.meta.js" />
     <Content Include="www\bridge\index.html" />
+    <Content Include="www\img\backgr.jpg" />
     <Content Include="www\img\DirtBlock.png" />
     <Content Include="www\img\foo\Brown Block.png" />
     <Content Include="www\img\foo\Character Boy.png" />
@@ -140,6 +142,8 @@
     <Content Include="www\img\foo\Window Tall.png" />
     <Content Include="www\img\foo\Wood Block.png" />
     <Content Include="www\img\GrassBlock.png" />
+    <Content Include="www\img\lard_kopf_transparent.png" />
+    <Content Include="www\img\m4.png" />
     <Content Include="www\img\StoneBlock.png" />
     <Content Include="www\index.html" />
   </ItemGroup>

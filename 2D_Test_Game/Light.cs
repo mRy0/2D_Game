@@ -17,7 +17,7 @@ namespace _2D_Test_Game
             X = 0;
             Y = 0;
             Type = 0;
-            Brightness = 100;
+            Brightness = 85;
             BrightDown = false;
         }
     }

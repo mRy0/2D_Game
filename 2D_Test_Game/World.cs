@@ -189,41 +189,6 @@ namespace _2D_Test_Game
                 tmpDrawY += Blocks.Block.BlockSizeY;
             }
 
-            
-
-
-
-
-            /*ct.GlobalAlpha = 0.5f;
-            ct.FillStyle = "rgba(0,0,0,0.3)";
-            ct.FillRect(0, 0, width, height);
-            ct.FillStyle = "rgba(255,255,255,0.3)";
-            ct.BeginPath();
-            ct.Arc(250, 250, 20, 0, 2 * Math.PI);
-            ct.Fill();
-            ct.GlobalCompositeOperation = Bridge.Html5.CanvasTypes.CanvasCompositeOperationType.Lighten;
-            */
-
-            //canvas.DrawImage(ct.Canvas, 0, 0, width, height);
-            
-
-
-
-            //canvas.CreateRadialGradient()
-
-
-            //draw projectiles
-            foreach (var projectile in _projectiles)
-            {
-                projectile.Draw(canvas,  drawPosX + projectile.X - mapPosX, drawPosY +  projectile.Y - mapPosY);
-
-            }
-
-
-            //draw player
-            _player.Draw(canvas,(width / 2), (height / 2));
-
-
 
 
             //shadowContext.ClearRect(0, 0, width, height);
@@ -235,6 +200,41 @@ namespace _2D_Test_Game
 
             shadowContext.FillStyle = "rgb(0,0,0,0.3)";
             shadowContext.FillRect(0, 0, width, height);
+
+
+            
+
+
+            //draw projectiles
+            foreach (var projectile in _projectiles)
+            {
+                projectile.Draw(canvas,  drawPosX + projectile.X - mapPosX, drawPosY +  projectile.Y - mapPosY);
+
+                var lGrd = shadowContext.CreateRadialGradient(drawPosX + projectile.X - mapPosX + 5, drawPosY + projectile.Y - mapPosY + 5, 0, drawPosX + projectile.X - mapPosX + 5, drawPosY + projectile.Y - mapPosY + 5, 50);
+                lGrd.AddColorStop(0, "rgba(255,255,255,0.4)");
+                lGrd.AddColorStop(1, "rgba(255,255,255,0.0)");
+                shadowContext.FillStyle = lGrd;
+                shadowContext.GlobalCompositeOperation = Bridge.Html5.CanvasTypes.CanvasCompositeOperationType.DestinationOut;
+                shadowContext.FillRect(0, 0, width, height);
+
+                var lGrd2 = shadowContext.CreateRadialGradient(drawPosX + projectile.X - mapPosX + 5, drawPosY + projectile.Y - mapPosY + 5, 0, drawPosX + projectile.X - mapPosX + 5, drawPosY + projectile.Y - mapPosY + 5, 50);
+                lGrd2.AddColorStop(0, "rgba(255,0,0,0.5)");
+                lGrd2.AddColorStop(1, "rgba(255,0,0,0.0)");
+                shadowContext.FillStyle = lGrd2;
+                shadowContext.GlobalCompositeOperation = Bridge.Html5.CanvasTypes.CanvasCompositeOperationType.SourceOver;
+                shadowContext.FillRect(0, 0, width, height);
+
+
+            }
+
+
+            //draw player
+            _player.Draw(canvas,(width / 2), (height / 2));
+
+
+
+            shadowContext.GlobalCompositeOperation = Bridge.Html5.CanvasTypes.CanvasCompositeOperationType.DestinationOut;
+
             //create lights
             foreach (var light in _lights)
             {
